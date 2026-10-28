@@ -1,5 +1,5 @@
 /* =====================================================================
-   Hoa Quả Việt Thắng — main.js
+   Đỗ Văn Thuỳ 1975 — main.js
    Menu mobile, header khi cuộn, hiệu ứng hiện dần (reveal),
    nút cuộn lên đầu, lightbox ảnh giấy phép, năm tự động.
    ===================================================================== */
@@ -119,61 +119,6 @@
   }
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && lightbox && !lightbox.hidden) closeLightbox();
-  });
-
-  /* ---------- Đặt hàng: copy tin nhắn sản phẩm + mở Zalo ---------- */
-  const toast = document.getElementById('toast');
-  let toastTimer;
-
-  function showToast(message, duration) {
-    if (!toast) return;
-    toast.textContent = message;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toast.classList.remove('show');
-    }, duration || 3200);
-  }
-
-  function copyText(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(text);
-    }
-    // Fallback cho http:// hoặc file://
-    return new Promise(function (resolve, reject) {
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.setAttribute('readonly', '');
-      ta.style.position = 'fixed';
-      ta.style.top = '-9999px';
-      document.body.appendChild(ta);
-      ta.select();
-      let ok = false;
-      try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
-      document.body.removeChild(ta);
-      if (ok) resolve(); else reject(new Error('copy failed'));
-    });
-  }
-
-  document.querySelectorAll('.btn-order').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const card = btn.closest('.card');
-      if (!card) return;
-      const nameEl = card.querySelector('h3');
-      const priceEl = card.querySelector('.card-price');
-      if (!nameEl) return;
-
-      const name = nameEl.textContent.trim();
-      const price = priceEl ? priceEl.textContent.replace(/\s+/g, '').trim() : '';
-      const message = 'Xin chào Hoa Quả Việt Thắng, mình muốn đặt: ' + name + (price ? ' (' + price + ')' : '') + '.';
-
-      copyText(message).then(function () {
-        showToast('Đã sao chép tin nhắn — mở Zalo và dán (paste) nhé!', 3200);
-      }).catch(function () {
-        showToast('Đặt hàng: ' + message, 5000);
-      });
-      // Không preventDefault: thẻ <a target="_blank"> vẫn tự mở Zalo.
-    });
   });
 
   /* ---------- Năm tự động ở footer ---------- */
